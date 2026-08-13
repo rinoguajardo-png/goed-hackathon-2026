@@ -93,6 +93,12 @@ Try the live Grants.gov pipeline directly:
 curl "http://localhost:3000/api/grants-gov/search?q=artificial+intelligence+health"
 ```
 
+**Git identity:** this repo requires a real `user.name`/`user.email` set
+locally (`git config user.email you@example.com`, no `--global` needed).
+Vercel's deployment protection rejects deploys whose commit author isn't a
+recognized team member — Git's auto-generated fallback identity
+(`you@Your-Mac.localdomain`) will fail that check.
+
 ## Environment variables
 
 See `.env.example` for the full list and comments. Nothing is required to run
