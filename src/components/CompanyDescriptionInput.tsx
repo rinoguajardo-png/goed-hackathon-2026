@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Sparkles } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 interface CompanyDescriptionInputProps {
   initialValue?: string;
@@ -23,23 +26,20 @@ export function CompanyDescriptionInput({
         if (value.trim()) onSubmit(value.trim());
       }}
     >
-      <label htmlFor="company-description" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+      <label htmlFor="company-description" className="text-sm font-medium text-foreground">
         Tell us about your company
       </label>
-      <textarea
+      <Textarea
         id="company-description"
-        className="min-h-32 w-full rounded-lg border border-gray-300 p-3 text-sm dark:border-gray-700 dark:bg-gray-900"
+        className="min-h-32"
         placeholder="We're a 15-person Utah healthcare SaaS company using AI to reduce administrative work for nurses..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <button
-        type="submit"
-        disabled={submitting || !value.trim()}
-        className="self-start rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-      >
+      <Button type="submit" size="lg" disabled={submitting || !value.trim()} className="self-start">
+        <Sparkles data-icon="inline-start" />
         {submitting ? "Analyzing..." : "Find federal opportunities"}
-      </button>
+      </Button>
     </form>
   );
 }

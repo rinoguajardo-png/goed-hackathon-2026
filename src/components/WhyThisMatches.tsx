@@ -1,8 +1,13 @@
+import { Sparkles } from "lucide-react";
+
 export function WhyThisMatches({ explanation }: { explanation: string }) {
   return (
     <div>
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500">Why this matches</h4>
-      <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{explanation}</p>
+      <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        <Sparkles className="size-3.5 text-primary" />
+        Why this matches
+      </h4>
+      <p className="mt-1.5 text-sm text-foreground/90">{explanation}</p>
     </div>
   );
 }

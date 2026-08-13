@@ -13,7 +13,7 @@ export function CompanyDescriptionDemo() {
     <div className="flex flex-col gap-3">
       <CompanyDescriptionInput onSubmit={setSubmitted} />
       {submitted && (
-        <p className="rounded-md bg-gray-50 p-3 text-xs text-gray-600 dark:bg-gray-900 dark:text-gray-400">
+        <p className="rounded-lg bg-muted p-3 text-xs text-muted-foreground">
           Captured — profile extraction wires in tomorrow. You typed: &quot;{submitted}&quot;
         </p>
       )}

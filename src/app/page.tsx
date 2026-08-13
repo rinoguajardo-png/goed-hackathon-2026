@@ -1,12 +1,19 @@
 import Link from "next/link";
+import { AlertCircle, HeartPulse, Factory, Droplets, ShieldCheck, Users2, SearchX, MapPin } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { GOED_TEST_STARTUPS } from "@/fixtures/goed-test-startups";
 import { fetchNormalizedOpportunities } from "@/lib/sources/grants-gov";
 import { GrantsGovClientError } from "@/lib/sources/grants-gov/client";
 import { StartupProfilePreview } from "@/components/StartupProfilePreview";
 import { OpportunityCard } from "@/components/OpportunityCard";
 import { CompanyDescriptionDemo } from "@/components/CompanyDescriptionDemo";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+
+const STARTUP_ICONS: LucideIcon[] = [HeartPulse, Factory, Droplets, ShieldCheck, Users2];
 
 interface HomeProps {
   searchParams: Promise<{ startup?: string }>;
@@ -28,35 +35,40 @@ export default async function Home({ searchParams }: HomeProps) {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12">
-      <header className="mb-8">
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-          GOED Federal Funding Intelligence — infrastructure preview
+    <div className="mx-auto max-w-4xl px-6 py-10">
+      <div className="mb-10">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          What federal resources could help your company grow — and why?
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Foundation build. Matching/eligibility logic is not implemented yet — this page proves the
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+          Foundation build. Matching and eligibility logic land tomorrow — this page proves the
           schemas, live Grants.gov adapter, and UI components work end to end.
         </p>
-      </header>
+      </div>
 
       <section className="mb-8">
-        <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           GOED test startups
         </h2>
         <div className="flex flex-wrap gap-2">
-          {GOED_TEST_STARTUPS.map((s, i) => (
-            <Link
-              key={s.companyName}
-              href={`/?startup=${i}`}
-              className={`rounded-full border px-3 py-1 text-xs font-medium ${
-                i === index
-                  ? "border-blue-600 bg-blue-600 text-white"
-                  : "border-gray-300 text-gray-700 hover:border-gray-400 dark:border-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {s.companyName?.replace("GOED Test ", "")}
-            </Link>
-          ))}
+          {GOED_TEST_STARTUPS.map((s, i) => {
+            const Icon = STARTUP_ICONS[i];
+            return (
+              <Link
+                key={s.companyName}
+                href={`/?startup=${i}`}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                  i === index
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-foreground hover:bg-muted"
+                )}
+              >
+                <Icon className="size-3.5" />
+                {s.companyName?.replace("GOED Test ", "")}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -65,23 +77,39 @@ export default async function Home({ searchParams }: HomeProps) {
       </section>
 
       <section className="mb-8">
-        <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
-          Or describe your own company
-        </h2>
-        <CompanyDescriptionDemo />
+        <Card>
+          <CardHeader>
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Or describe your own company
+            </h2>
+          </CardHeader>
+          <CardContent>
+            <CompanyDescriptionDemo />
+          </CardContent>
+        </Card>
       </section>
 
+      <Separator className="mb-8" />
+
       <section>
-        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
-          Government Opportunity Map (live Grants.gov, keyword: &quot;{keyword}&quot;)
+        <h2 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Government Opportunity Map
         </h2>
+        <p className="mb-4 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+          <MapPin className="size-3.5" />
+          Live Grants.gov · keyword: &quot;{keyword}&quot;
+        </p>
         {fetchError && (
-          <p className="rounded-md bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-            {fetchError}
-          </p>
+          <div className="mb-3 flex items-start gap-2 rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+            <AlertCircle className="mt-0.5 size-4 shrink-0" />
+            <span>{fetchError}</span>
+          </div>
         )}
         {!fetchError && opportunities.length === 0 && (
-          <p className="text-sm text-gray-400 italic">No opportunities found for this keyword.</p>
+          <div className="flex items-center gap-2 rounded-lg border border-dashed border-border p-6 text-sm text-muted-foreground">
+            <SearchX className="size-4 shrink-0" />
+            No opportunities found for this keyword.
+          </div>
         )}
         <div className="flex flex-col gap-3">
           {opportunities.map((o, i) =>

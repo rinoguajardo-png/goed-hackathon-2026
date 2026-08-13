@@ -1,10 +1,12 @@
 import type { FitClassification } from "@/types/matching";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const STYLES: Record<FitClassification, string> = {
-  "likely-fit": "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300",
+  "likely-fit": "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
   "potential-fit-verify-eligibility": "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300",
   "adjacent-opportunity": "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
-  "probably-not-a-fit": "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400",
+  "probably-not-a-fit": "bg-muted text-muted-foreground",
 };
 
 const LABELS: Record<FitClassification, string> = {
@@ -15,9 +17,5 @@ const LABELS: Record<FitClassification, string> = {
 };
 
 export function FitClassificationBadge({ classification }: { classification: FitClassification }) {
-  return (
-    <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${STYLES[classification]}`}>
-      {LABELS[classification]}
-    </span>
-  );
+  return <Badge className={cn("border-0", STYLES[classification])}>{LABELS[classification]}</Badge>;
 }
