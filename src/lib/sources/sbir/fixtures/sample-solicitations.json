@@ -1,0 +1,90 @@
+[
+  {
+    "solicitation_number": "HHS-NIH-2026-01",
+    "solicitation_title": "AI-Enabled Clinical Decision Support Tools to Reduce Administrative Burden",
+    "program": "SBIR/STTR",
+    "phase": "Phase I",
+    "agency": "HHS",
+    "branch": "NIH",
+    "solicitation_year": 2026,
+    "open_date": "2026-01-15",
+    "close_date": "2026-11-01",
+    "application_due_date": "2026-11-01",
+    "current_status": "open",
+    "solicitation_agency_url": "https://sbir.nih.gov",
+    "research_area_keywords": ["artificial intelligence", "healthcare", "clinical workflow"],
+    "solicitation_topics": [
+      {
+        "topic_number": "NIH-2026-001",
+        "topic_title": "AI Tools to Reduce Nursing Administrative Workload",
+        "topic_description": "Seeking small business proposals for AI/ML software that reduces documentation and administrative burden on nursing staff in hospital settings."
+      }
+    ]
+  },
+  {
+    "solicitation_number": "DOD-AF-2026-02",
+    "solicitation_title": "Lightweight Composite Materials for Aerospace Structures",
+    "program": "SBIR",
+    "phase": "Phase I/II",
+    "agency": "DOD",
+    "branch": "Air Force",
+    "solicitation_year": 2026,
+    "open_date": "2026-02-01",
+    "close_date": "2026-09-15",
+    "application_due_date": "2026-09-15",
+    "current_status": "open",
+    "solicitation_agency_url": "https://www.afsbirsttr.af.mil",
+    "research_area_keywords": ["advanced manufacturing", "aerospace", "lightweight materials", "defense"],
+    "solicitation_topics": [
+      {
+        "topic_number": "AF261-005",
+        "topic_title": "Advanced Manufacturing Processes for Lightweight Aerospace Components",
+        "topic_description": "Seeking manufacturing processes and materials that reduce weight in aerospace structural components while maintaining strength and reliability."
+      }
+    ]
+  },
+  {
+    "solicitation_number": "EPA-2026-03",
+    "solicitation_title": "Sensor and AI Platforms for Municipal Water Infrastructure",
+    "program": "SBIR",
+    "phase": "Phase I",
+    "agency": "EPA",
+    "branch": null,
+    "solicitation_year": 2026,
+    "open_date": "2026-03-01",
+    "close_date": "2026-08-01",
+    "application_due_date": "2026-08-01",
+    "current_status": "open",
+    "solicitation_agency_url": "https://www.epa.gov/sbir",
+    "research_area_keywords": ["water technology", "climate technology", "IoT sensors", "infrastructure"],
+    "solicitation_topics": [
+      {
+        "topic_number": "EPA-26-001",
+        "topic_title": "AI-Driven Leak Detection for Municipal Water Systems",
+        "topic_description": "Seeking sensor and AI-based platforms that reduce non-revenue water loss in municipal distribution systems."
+      }
+    ]
+  },
+  {
+    "solicitation_number": "DHS-2026-04",
+    "solicitation_title": "AI-Powered Threat Detection for Critical Infrastructure",
+    "program": "SBIR",
+    "phase": "Phase I",
+    "agency": "DHS",
+    "branch": "S&T",
+    "solicitation_year": 2026,
+    "open_date": "2026-01-01",
+    "close_date": "2026-07-01",
+    "application_due_date": "2026-07-01",
+    "current_status": "open",
+    "solicitation_agency_url": "https://www.dhs.gov/science-and-technology/sbir",
+    "research_area_keywords": ["cybersecurity", "artificial intelligence", "threat detection"],
+    "solicitation_topics": [
+      {
+        "topic_number": "DHS-26-002",
+        "topic_title": "Machine Learning Threat Detection for Small and Mid-Sized Organizations",
+        "topic_description": "Seeking AI/ML-based cybersecurity threat detection tools deployable by resource-constrained small and mid-sized organizations."
+      }
+    ]
+  }
+]

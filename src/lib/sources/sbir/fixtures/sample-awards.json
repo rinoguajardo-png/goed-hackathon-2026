@@ -1,0 +1,62 @@
+[
+  {
+    "firm": "NurseFlow AI, Inc.",
+    "award_title": "AI-Assisted Clinical Documentation to Reduce Nursing Administrative Burden",
+    "agency": "HHS",
+    "branch": "NIH",
+    "phase": "Phase I",
+    "program": "SBIR",
+    "agency_tracking_number": "1R43AG090001-01",
+    "proposal_award_date": "2025-09-01",
+    "award_year": 2025,
+    "award_amount": 300000,
+    "state": "UT",
+    "research_area_keywords": ["artificial intelligence", "healthcare", "clinical workflow"],
+    "abstract": "Development of an AI system that automates nursing documentation tasks to reduce administrative burden in hospital settings."
+  },
+  {
+    "firm": "AeroLite Composites LLC",
+    "award_title": "Lightweight Composite Manufacturing for Aerospace Structural Components",
+    "agency": "DOD",
+    "branch": "Air Force",
+    "phase": "Phase II",
+    "program": "SBIR",
+    "agency_tracking_number": "FA8649-25-C-0042",
+    "proposal_award_date": "2025-06-01",
+    "award_year": 2025,
+    "award_amount": 1500000,
+    "state": "UT",
+    "research_area_keywords": ["advanced manufacturing", "aerospace", "lightweight materials"],
+    "abstract": "Scale-up of an advanced manufacturing process for lightweight composite aerospace structural components."
+  },
+  {
+    "firm": "HydroSense Technologies",
+    "award_title": "AI-Driven Leak Detection Platform for Municipal Water Systems",
+    "agency": "EPA",
+    "branch": null,
+    "phase": "Phase I",
+    "program": "SBIR",
+    "agency_tracking_number": "EPA-25-SB-0117",
+    "proposal_award_date": "2025-04-01",
+    "award_year": 2025,
+    "award_amount": 249999,
+    "state": "CA",
+    "research_area_keywords": ["water technology", "IoT sensors", "climate technology"],
+    "abstract": "Pilot deployment of a sensor and AI platform to detect and reduce non-revenue water loss for municipal utilities."
+  },
+  {
+    "firm": "SentinelML Corp",
+    "award_title": "Machine Learning Threat Detection for Resource-Constrained Organizations",
+    "agency": "DHS",
+    "branch": "S&T",
+    "phase": "Phase I",
+    "program": "SBIR",
+    "agency_tracking_number": "DHS-25-ST-0088",
+    "proposal_award_date": "2025-03-01",
+    "award_year": 2025,
+    "award_amount": 200000,
+    "state": "VA",
+    "research_area_keywords": ["cybersecurity", "artificial intelligence", "threat detection"],
+    "abstract": "Development of a machine learning-based threat detection tool for small and mid-sized organizations lacking dedicated security teams."
+  }
+]
