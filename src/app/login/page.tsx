@@ -10,9 +10,9 @@ export default async function LoginPage({ searchParams }: PageProps) {
 
   return (
     <main className="h-full min-h-screen flex items-center justify-center login-canyon-bg relative overflow-hidden font-body-md text-on-surface">
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop py-xl grid grid-cols-1 md:grid-cols-2 gap-lg items-center">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop py-xl flex flex-col md:flex-row gap-lg items-center">
         {/* Branding / hero side */}
-        <div className="hidden md:flex flex-col text-primary-foreground pr-lg">
+        <div className="hidden md:flex flex-col text-primary-foreground pr-lg flex-1 min-w-0">
           <div className="flex items-center gap-sm mb-xl">
             <Landmark className="size-9" />
             <span className="font-heading text-headline-md font-bold tracking-tight">UT Opportunity Navigator</span>
@@ -38,26 +38,32 @@ export default async function LoginPage({ searchParams }: PageProps) {
           </div>
         </div>
 
-        {/* Login form side */}
-        <div className="bg-surface-bright/90 backdrop-blur-md rounded-xl shadow-[0px_8px_20px_rgba(0,33,71,0.25)] p-gutter md:p-lg border border-white/50 w-full max-w-md mx-auto relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-primary-container" />
+        {/* Login form side — sizing lives on this plain outer box; the
+            backdrop-blur + overflow-hidden effects are isolated on the inner
+            child below. Safari has a bug where backdrop-filter + overflow
+            on a flex/grid item directly collapses it to min-content width;
+            keeping this wrapper "plain" avoids it. */}
+        <div className="w-full md:w-[420px] md:shrink-0 mx-auto">
+          <div className="bg-surface-bright/90 backdrop-blur-md rounded-xl shadow-[0px_8px_20px_rgba(0,33,71,0.25)] p-gutter md:p-lg border border-white/50 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-primary-container" />
 
-          <div className="md:hidden flex items-center gap-sm mb-lg text-primary-container">
-            <Landmark className="size-7" />
-            <span className="font-heading text-headline-sm font-bold">UT Opportunity Navigator</span>
-          </div>
+            <div className="md:hidden flex items-center gap-sm mb-lg text-primary-container">
+              <Landmark className="size-7" />
+              <span className="font-heading text-headline-sm font-bold">UT Opportunity Navigator</span>
+            </div>
 
-          <div className="mb-lg">
-            <h2 className="font-heading text-headline-md text-primary mb-xs">Sign In</h2>
-            <p className="font-body-sm text-body-sm text-on-surface-variant">Enter your email to access your dashboard.</p>
-          </div>
+            <div className="mb-lg">
+              <h2 className="font-heading text-headline-md text-primary mb-xs">Sign In</h2>
+              <p className="font-body-sm text-body-sm text-on-surface-variant">Enter your email to access your dashboard.</p>
+            </div>
 
-          <LoginForm next={next ?? "/intake"} />
+            <LoginForm next={next ?? "/intake"} />
 
-          <div className="mt-lg text-center">
-            <p className="font-body-sm text-body-sm text-on-surface-variant">
-              Don&apos;t have an account? <span className="font-semibold text-secondary">Any email creates one</span>
-            </p>
+            <div className="mt-lg text-center">
+              <p className="font-body-sm text-body-sm text-on-surface-variant">
+                Don&apos;t have an account? <span className="font-semibold text-secondary">Any email creates one</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
