@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Network, Bell } from "lucide-react";
+import { Network, Bell, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { logoutAction } from "@/app/login/actions";
 import { NAV_ITEMS } from "./nav-items";
+import type { DemoSession } from "@/lib/session";
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({ children, session }: { children: React.ReactNode; session: DemoSession | null }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const startup = searchParams.get("startup");
@@ -49,14 +51,34 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
-        <button
-          type="button"
-          className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors text-primary relative"
-          aria-label="Notifications"
-        >
-          <Bell className="size-6" />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full" />
-        </button>
+        <div className="flex items-center gap-2">
+          {session && (
+            <span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant">
+              {session.name}
+              {session.company ? ` · ${session.company}` : ""}
+            </span>
+          )}
+          <button
+            type="button"
+            className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors text-primary relative"
+            aria-label="Notifications"
+          >
+            <Bell className="size-6" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full" />
+          </button>
+          {session && (
+            <form action={logoutAction}>
+              <button
+                type="submit"
+                className="hidden md:flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant"
+                aria-label="Log out"
+                title="Log out"
+              >
+                <LogOut className="size-5" />
+              </button>
+            </form>
+          )}
+        </div>
       </header>
 
       <main className="flex-grow w-full pt-16 md:pt-20 pb-[84px] md:pb-0">{children}</main>

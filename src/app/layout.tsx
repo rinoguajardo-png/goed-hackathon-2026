@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { AppShell } from "@/components/nav/AppShell";
+import { getSession } from "@/lib/session";
 import "./globals.css";
 
 // Plain <link> tags rather than next/font/google: Turbopack's font pipeline
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
   description: "Government funding intelligence analyst for Utah startups — GOED AI Builder Day 2026",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const session = await getSession();
   return (
     <html lang="en" className="h-full antialiased">
       <head>
@@ -26,7 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full flex flex-col bg-background text-on-background font-body-md">
         <Suspense fallback={null}>
-          <AppShell>{children}</AppShell>
+          <AppShell session={session}>{children}</AppShell>
         </Suspense>
       </body>
     </html>

@@ -27,14 +27,21 @@ const FIELD_ICONS: Record<string, LucideIcon> = {
 export function IntakeExperience({
   initialProfile,
   initialIndex,
+  greetingName,
 }: {
   initialProfile: StartupProfile;
   initialIndex: number | null;
+  greetingName?: string;
 }) {
   const [profile, setProfile] = useState(initialProfile);
   const [usingCustom, setUsingCustom] = useState(initialIndex == null);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: "ai", text: "Tell us about your company, what you do, and what you're trying to accomplish." },
+    {
+      role: "ai",
+      text: greetingName
+        ? `Hi ${greetingName} — tell us about your company, what you do, and what you're trying to accomplish.`
+        : "Tell us about your company, what you do, and what you're trying to accomplish.",
+    },
   ]);
   const [input, setInput] = useState("");
   const [isExtracting, startTransition] = useTransition();
