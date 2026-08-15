@@ -8,3 +8,11 @@ export function friendlyNameFromEmail(email: string): string {
   if (parts.length === 0) return email;
   return parts.map((p) => p[0].toUpperCase() + p.slice(1)).join(" ");
 }
+
+/** "GOED Test 2: Advanced Manufacturing" -> "Advanced Manufacturing". Strips
+ * the internal fixture-labeling prefix so the header shows a real-looking
+ * company name instead of test scaffolding. */
+export function cleanCompanyName(name: string | null): string | null {
+  if (!name) return null;
+  return name.replace("GOED Test ", "").replace(/^\d: /, "");
+}

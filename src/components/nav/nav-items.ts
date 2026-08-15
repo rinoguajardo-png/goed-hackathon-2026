@@ -8,9 +8,11 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
+  { href: "/intake", label: "Intake", icon: MessageCircle },
   { href: "/", label: "Map", icon: Compass },
   { href: "/support", label: "Support", icon: Handshake },
-  { href: "/intake", label: "Intake", icon: MessageCircle },
   { href: "/ready", label: "Ready", icon: ClipboardCheck },
-  { href: "/profile", label: "Profile", icon: CircleUserRound },
 ];
+
+/** Shown separately in the header identity cluster, not as a tab. */
+export const PROFILE_ITEM: NavItem = { href: "/profile", label: "Profile", icon: CircleUserRound };

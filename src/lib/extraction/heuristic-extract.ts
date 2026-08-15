@@ -71,13 +71,15 @@ export function heuristicExtractProfile(rawDescription: string): StartupProfile 
 
   const industries = matchKeywords(text, INDUSTRY_KEYWORDS);
 
-  const useOfFundsMatch = text.match(/for ([a-z ,]+?)(?:\.|$)/i);
+  const useOfFundsMatch = text.match(/for ([a-z ,&-]+?)(?:\.|$)/i);
   const useOfFunds = useOfFundsMatch
     ? useOfFundsMatch[1]
         .split(/,| and /)
         .map((s) => s.trim())
         .filter(Boolean)
     : [];
+
+  const rdActivities = useOfFunds.filter((u) => /r&d|research/i.test(u));
 
   const clarifications: string[] = [];
   if (employees == null) clarifications.push("Employee count wasn't mentioned — please confirm team size.");
@@ -96,6 +98,7 @@ export function heuristicExtractProfile(rawDescription: string): StartupProfile 
     productMaturity: revenue ? "early-revenue" : "unknown",
     fundingNeed,
     useOfFunds,
+    rdActivities,
     extractionConfidence: 0.5,
     fieldsNeedingClarification: clarifications,
   };

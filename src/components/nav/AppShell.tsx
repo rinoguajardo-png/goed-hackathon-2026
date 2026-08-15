@@ -5,8 +5,10 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Network, Bell, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logoutAction } from "@/app/login/actions";
-import { NAV_ITEMS } from "./nav-items";
-import { friendlyNameFromEmail } from "@/lib/friendly-name";
+import { NAV_ITEMS, PROFILE_ITEM } from "./nav-items";
+import { friendlyNameFromEmail, cleanCompanyName } from "@/lib/friendly-name";
+import { resolveStartupIndex, tryParseCustomProfile } from "@/lib/demo-context";
+import { GOED_TEST_STARTUPS } from "@/fixtures/goed-test-startups";
 import type { DemoSession } from "@/lib/session";
 
 export function AppShell({ children, session }: { children: React.ReactNode; session: DemoSession | null }) {
@@ -21,6 +23,20 @@ export function AppShell({ children, session }: { children: React.ReactNode; ses
   };
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+
+  // Header identity shows the active company (from whichever profile is on
+  // screen via ?startup=/?custom=), not the login email — a person's name
+  // matters less here than "whose profile am I looking at." Only resolves a
+  // profile when the URL actually names one — no default fixture — so a
+  // fresh, still-blank Intake session doesn't falsely claim a company.
+  // Falls back to the account email when no company name is known yet.
+  const explicitProfile = custom
+    ? tryParseCustomProfile(custom)
+    : startup !== null
+      ? GOED_TEST_STARTUPS[resolveStartupIndex(startup)]
+      : null;
+  const identityLabel =
+    (explicitProfile && cleanCompanyName(explicitProfile.companyName)) ?? (session ? friendlyNameFromEmail(session.email) : null);
 
   return (
     <div className="min-h-full flex flex-col">
@@ -53,11 +69,25 @@ export function AppShell({ children, session }: { children: React.ReactNode; ses
           })}
         </nav>
         <div className="flex items-center gap-2">
-          {session && (
-            <span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant" title={session.email}>
-              {friendlyNameFromEmail(session.email)}
+          {identityLabel && (
+            <span
+              className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant"
+              title={session?.email}
+            >
+              {identityLabel}
             </span>
           )}
+          <Link
+            href={withStartup(PROFILE_ITEM.href)}
+            className={cn(
+              "flex items-center justify-center w-10 h-10 rounded-full transition-colors",
+              isActive(PROFILE_ITEM.href) ? "text-primary bg-surface-container-lowest" : "text-primary hover:bg-surface-container-low"
+            )}
+            aria-label="Profile"
+            title="Profile"
+          >
+            <PROFILE_ITEM.icon className="size-6" />
+          </Link>
           <button
             type="button"
             className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors text-primary relative"
