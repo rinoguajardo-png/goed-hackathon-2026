@@ -12,6 +12,7 @@ import {
   Sparkles,
   ArrowRight,
   Landmark,
+  ExternalLink,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getDemoContext, demoQueryParam } from "@/lib/demo-context";
@@ -58,10 +59,25 @@ export default async function OpportunityDetailPage({ params, searchParams }: Pa
           <ArrowLeft className="size-4" />
           <span className="font-label-caps text-label-caps">Back to Map</span>
         </Link>
-        <h1 className="font-heading text-headline-lg-mobile md:text-headline-lg text-primary mb-2">
-          {result.opportunity.name}
-        </h1>
-        <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl">{result.opportunity.description}</p>
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-md">
+          <div>
+            <h1 className="font-heading text-headline-lg-mobile md:text-headline-lg text-primary mb-2">
+              {result.opportunity.name}
+            </h1>
+            <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl">{result.opportunity.description}</p>
+          </div>
+          {result.opportunity.sourceUrl && (
+            <a
+              href={result.opportunity.sourceUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="shrink-0 inline-flex items-center justify-center gap-2 border border-secondary text-secondary hover:bg-surface-container-low font-label-caps text-label-caps px-5 py-3 rounded-lg h-12 transition-colors"
+            >
+              Apply on {result.opportunity.agency ?? result.opportunity.source}&apos;s site
+              <ExternalLink className="size-4" />
+            </a>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
@@ -214,13 +230,26 @@ export default async function OpportunityDetailPage({ params, searchParams }: Pa
               ))}
             </div>
 
-            <Link
-              href={`/ready?${qp}`}
-              className="w-full bg-primary hover:bg-primary-container text-primary-foreground font-body-md text-body-md font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-auto min-h-[48px]"
-            >
-              Improve Readiness
-              <ArrowRight className="size-5" />
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-sm mt-auto">
+              <Link
+                href={`/ready?${qp}`}
+                className="flex-1 bg-primary hover:bg-primary-container text-primary-foreground font-body-md text-body-md font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[48px]"
+              >
+                Improve Readiness
+                <ArrowRight className="size-5" />
+              </Link>
+              {result.opportunity.sourceUrl && (
+                <a
+                  href={result.opportunity.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 border border-secondary text-secondary hover:bg-surface-container-low font-body-md text-body-md font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[48px]"
+                >
+                  Apply Directly
+                  <ExternalLink className="size-[18px]" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>
