@@ -6,6 +6,7 @@ import { Network, Bell, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logoutAction } from "@/app/login/actions";
 import { NAV_ITEMS } from "./nav-items";
+import { friendlyNameFromEmail } from "@/lib/friendly-name";
 import type { DemoSession } from "@/lib/session";
 
 export function AppShell({ children, session }: { children: React.ReactNode; session: DemoSession | null }) {
@@ -53,9 +54,8 @@ export function AppShell({ children, session }: { children: React.ReactNode; ses
         </nav>
         <div className="flex items-center gap-2">
           {session && (
-            <span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant">
-              {session.name}
-              {session.company ? ` · ${session.company}` : ""}
+            <span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant" title={session.email}>
+              {friendlyNameFromEmail(session.email)}
             </span>
           )}
           <button

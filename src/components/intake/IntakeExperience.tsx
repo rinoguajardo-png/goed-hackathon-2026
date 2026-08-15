@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Bot, ArrowUp, CheckCircle2, MoreHorizontal, MapPin, Factory, Users, DollarSign, FlaskConical, TrendingUp } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { StartupProfile } from "@/types/startup-profile";
-import { extractProfileAction } from "@/app/intake/actions";
+import { extractProfileAction } from "@/app/(app)/intake/actions";
 import { profileFields } from "@/lib/profile-completeness";
 import { cn } from "@/lib/utils";
 

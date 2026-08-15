@@ -216,6 +216,23 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Login screen ambient background — Utah canyon dawn evoked via layered
+ * gradients + a dot pattern, rather than hotlinking the Stitch preview's
+ * ephemeral AI Studio image URL (those signed lh3.googleusercontent.com
+ * links aren't meant for production use and can expire). */
+.login-canyon-bg {
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 60% at 30% 20%, rgba(174, 199, 246, 0.25), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(168, 106, 61, 0.35), transparent 60%),
+    linear-gradient(135deg, #000a1e 0%, #002147 45%, #2d476f 100%);
+  background-size:
+    24px 24px,
+    100% 100%,
+    100% 100%,
+    100% 100%;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

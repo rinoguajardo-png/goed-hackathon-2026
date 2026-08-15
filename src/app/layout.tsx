@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import { AppShell } from "@/components/nav/AppShell";
-import { getSession } from "@/lib/session";
 import "./globals.css";
 
 // Plain <link> tags rather than next/font/google: Turbopack's font pipeline
@@ -14,23 +11,18 @@ export const metadata: Metadata = {
   description: "Government funding intelligence analyst for Utah startups — GOED AI Builder Day 2026",
 };
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const session = await getSession();
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="h-full antialiased">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-on-background font-body-md">
-        <Suspense fallback={null}>
-          <AppShell session={session}>{children}</AppShell>
-        </Suspense>
-      </body>
+      <body className="h-full flex flex-col bg-background text-on-background font-body-md">{children}</body>
     </html>
   );
 }

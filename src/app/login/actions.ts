@@ -4,18 +4,23 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SESSION_COOKIE } from "@/lib/session-constants";
 
-export async function loginAction(formData: FormData): Promise<void> {
-  const name = String(formData.get("name") ?? "").trim();
-  const company = String(formData.get("company") ?? "").trim();
-  const next = String(formData.get("next") ?? "/intake");
+const THIRTY_DAYS = 60 * 60 * 24 * 30;
 
-  if (!name) redirect(`/login?next=${encodeURIComponent(next)}`);
+export async function loginAction(formData: FormData): Promise<void> {
+  const viaUtahId = formData.get("utahid") === "1";
+  const email = viaUtahId ? "demo.founder@utahid.gov" : String(formData.get("email") ?? "").trim();
+  const next = String(formData.get("next") ?? "/intake");
+  const remember = formData.get("remember") === "on";
+  // Password is intentionally not checked — this is a demo identity gate,
+  // not real auth. See lib/session.ts.
+
+  if (!email) redirect(`/login?next=${encodeURIComponent(next)}`);
 
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, JSON.stringify({ name, company }), {
+  cookieStore.set(SESSION_COOKIE, JSON.stringify({ email }), {
     path: "/",
-    maxAge: 60 * 60 * 24 * 7, // 7 days — this is a demo identity cookie, not a real auth session
     sameSite: "lax",
+    ...(remember ? { maxAge: THIRTY_DAYS } : {}), // omit maxAge -> session cookie, cleared when the browser closes
   });
 
   redirect(next || "/intake");

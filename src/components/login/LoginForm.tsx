@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import { Network, ArrowRight } from "lucide-react";
+import { Mail, Lock, KeyRound } from "lucide-react";
 import { loginAction } from "@/app/login/actions";
 
 function SubmitButton() {
@@ -10,59 +10,96 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="mt-sm bg-primary hover:bg-primary-container text-primary-foreground font-body-md text-body-md font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[48px] disabled:opacity-60"
+      className="w-full flex justify-center items-center py-3 px-4 rounded-lg shadow-sm font-heading text-headline-sm text-primary-foreground bg-primary-container hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition-colors min-h-[48px] disabled:opacity-60"
     >
-      {pending ? "Signing in..." : "Continue"}
-      <ArrowRight className="size-5" />
+      {pending ? "Signing in..." : "Sign In"}
     </button>
   );
 }
 
 export function LoginForm({ next }: { next: string }) {
   return (
-    <form action={loginAction} className="flex flex-col gap-md w-full max-w-sm">
+    <form action={loginAction} className="space-y-md">
       <input type="hidden" name="next" value={next} />
-      <div className="flex flex-col gap-xs">
-        <label htmlFor="name" className="font-label-caps text-label-caps text-on-surface-variant">
-          Your name
+
+      <div>
+        <label className="block font-body-sm text-body-sm font-bold text-on-surface mb-xs" htmlFor="email">
+          Email Address
         </label>
-        <input
-          id="name"
-          name="name"
-          required
-          placeholder="Jane Founder"
-          className="bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 font-body-md text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all"
-        />
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+            <Mail className="size-[18px]" />
+          </div>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            placeholder="name@company.com"
+            className="block w-full pl-10 pr-3 py-3 font-body-md text-body-md bg-surface-container-low border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-colors"
+          />
+        </div>
       </div>
-      <div className="flex flex-col gap-xs">
-        <label htmlFor="company" className="font-label-caps text-label-caps text-on-surface-variant">
-          Company name
+
+      <div>
+        <label className="block font-body-sm text-body-sm font-bold text-on-surface mb-xs" htmlFor="password">
+          Password
         </label>
-        <input
-          id="company"
-          name="company"
-          placeholder="Acme Robotics"
-          className="bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 font-body-md text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all"
-        />
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+            <Lock className="size-[18px]" />
+          </div>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="••••••••"
+            className="block w-full pl-10 pr-3 py-3 font-body-md text-body-md bg-surface-container-low border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-colors"
+          />
+        </div>
       </div>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <input
+            id="remember"
+            name="remember"
+            type="checkbox"
+            className="h-4 w-4 text-secondary focus:ring-secondary border-outline-variant rounded bg-surface-container-lowest"
+          />
+          <label htmlFor="remember" className="ml-2 font-body-sm text-body-sm text-on-surface-variant">
+            Remember me
+          </label>
+        </div>
+        <span className="font-body-sm text-body-sm text-outline cursor-default" title="Demo build — not wired up">
+          Forgot password?
+        </span>
+      </div>
+
       <SubmitButton />
-      <p className="font-body-sm text-body-sm text-on-surface-variant text-center">
-        Demo sign-in — no password needed. This just personalizes your session.
+
+      <div className="relative py-sm">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-outline-variant" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="px-2 bg-surface-bright font-body-sm text-body-sm text-outline">Or continue with</span>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        name="utahid"
+        value="1"
+        className="w-full flex justify-center items-center py-3 px-4 border border-outline-variant rounded-lg bg-surface-container-lowest font-body-md text-body-md font-semibold text-on-surface hover:bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition-colors min-h-[48px]"
+      >
+        <KeyRound className="mr-2 size-[18px] text-primary-container" />
+        Sign in with UtahID
+      </button>
+
+      <p className="font-body-sm text-body-sm text-on-surface-variant text-center pt-sm">
+        Demo sign-in — password isn&apos;t checked. Any email gets you in.
       </p>
     </form>
-  );
-}
-
-export function LoginBrand() {
-  return (
-    <div className="flex flex-col items-center gap-sm mb-lg">
-      <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
-        <Network className="size-7" />
-      </div>
-      <h1 className="font-heading text-headline-lg-mobile text-primary text-center">UT Opportunity Navigator</h1>
-      <p className="font-body-md text-body-md text-on-surface-variant text-center max-w-xs">
-        Sign in to find the federal opportunities built for your company.
-      </p>
-    </div>
   );
 }
