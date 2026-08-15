@@ -32,7 +32,7 @@ export function resolveStartupIndex(startupParam: string | undefined): number {
   return Math.min(Math.max(n, 0), GOED_TEST_STARTUPS.length - 1);
 }
 
-function tryParseCustomProfile(custom: string | undefined): StartupProfile | null {
+export function tryParseCustomProfile(custom: string | undefined): StartupProfile | null {
   if (!custom) return null;
   try {
     return StartupProfileSchema.parse(JSON.parse(decodeURIComponent(custom)));

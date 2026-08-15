@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { Bot, ArrowUp, CheckCircle2, MoreHorizontal, MapPin, Factory, Users, DollarSign, FlaskConical, TrendingUp } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -24,29 +24,56 @@ const FIELD_ICONS: Record<string, LucideIcon> = {
   "product-maturity": TrendingUp,
 };
 
-export function IntakeExperience({
-  initialProfile,
-  initialIndex,
-  greetingName,
-}: {
-  initialProfile: StartupProfile;
-  initialIndex: number | null;
-  greetingName?: string;
-}) {
+const REVEAL_STEP_MS = 450;
+const REVEAL_START_DELAY_MS = 500;
+
+/** An already-known profile (e.g. carried over via ?custom=) just appears —
+ * it's not new information, so no animation on first render. */
+function initialRevealedIds(profile: StartupProfile): Set<string> {
+  return new Set(profileFields(profile).filter((f) => f.complete).map((f) => f.id));
+}
+
+export function IntakeExperience({ initialProfile }: { initialProfile: StartupProfile }) {
   const [profile, setProfile] = useState(initialProfile);
-  const [usingCustom, setUsingCustom] = useState(initialIndex == null);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      role: "ai",
-      text: greetingName
-        ? `Hi ${greetingName} — tell us about your company, what you do, and what you're trying to accomplish.`
-        : "Tell us about your company, what you do, and what you're trying to accomplish.",
-    },
+    { role: "ai", text: "Tell us about your company, what you do, and what you're trying to accomplish." },
   ]);
   const [input, setInput] = useState("");
   const [isExtracting, startTransition] = useTransition();
+  const [revealedIds, setRevealedIds] = useState<Set<string>>(() => initialRevealedIds(initialProfile));
+  const [isBuilding, setIsBuilding] = useState(false);
 
-  const fields = profileFields(profile);
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => timersRef.current.forEach(clearTimeout), []);
+
+  // Stages the "AI building your profile" reveal field-by-field, called
+  // directly after a fresh extraction lands — not from an effect, since this
+  // is a response to the user's submit action, not a sync-with-props concern.
+  function scheduleReveal(nextProfile: StartupProfile) {
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+
+    const completeIds = profileFields(nextProfile)
+      .filter((f) => f.complete)
+      .map((f) => f.id);
+
+    setRevealedIds(new Set());
+    if (completeIds.length === 0) return;
+
+    setIsBuilding(true);
+    completeIds.forEach((id, i) => {
+      const t = setTimeout(
+        () => {
+          setRevealedIds((prev) => new Set(prev).add(id));
+          if (i === completeIds.length - 1) setIsBuilding(false);
+        },
+        REVEAL_START_DELAY_MS + i * REVEAL_STEP_MS
+      );
+      timersRef.current.push(t);
+    });
+  }
+
+  const fields = profileFields(profile).map((f) => ({ ...f, complete: f.complete && revealedIds.has(f.id) }));
   const completeCount = fields.filter((f) => f.complete).length;
 
   function handleSubmit(e: React.FormEvent) {
@@ -58,21 +85,22 @@ export function IntakeExperience({
     startTransition(async () => {
       const extracted = await extractProfileAction(text);
       setProfile(extracted);
-      setUsingCustom(true);
+      scheduleReveal(extracted);
       setMessages((prev) => [
         ...prev,
         {
           role: "ai",
           text:
             extracted.fieldsNeedingClarification.length > 0
-              ? `Got it — I've updated your profile. A couple things I'd still like to confirm: ${extracted.fieldsNeedingClarification.join(" ")}`
-              : "Got it — I've updated your profile from what you shared.",
+              ? `Got it — building your profile now. A couple things I'd still like to confirm: ${extracted.fieldsNeedingClarification.join(" ")}`
+              : "Got it — building your profile now from what you shared.",
         },
       ]);
     });
   }
 
-  const mapHref = usingCustom ? `/?custom=${encodeURIComponent(JSON.stringify(profile))}` : `/?startup=${initialIndex}`;
+  const canGenerate = completeCount > 0 && !isBuilding;
+  const mapHref = `/?custom=${encodeURIComponent(JSON.stringify(profile))}`;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-md flex-grow content-start pb-xl">
@@ -92,13 +120,13 @@ export function IntakeExperience({
               </div>
             )
           )}
-          {isExtracting && (
+          {(isExtracting || isBuilding) && (
             <div className="flex items-start gap-sm max-w-[85%]">
               <div className="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 shadow-sm">
                 <Bot className="size-5" />
               </div>
               <div className="bg-surface-container p-sm rounded-2xl rounded-tl-sm text-on-surface-variant shadow-sm font-body-md italic">
-                Reading your description...
+                {isExtracting ? "Reading your description..." : "Building your profile..."}
               </div>
             </div>
           )}
@@ -150,9 +178,9 @@ export function IntakeExperience({
               <div
                 key={field.id}
                 className={cn(
-                  "p-sm rounded-lg flex items-center justify-between transition-transform",
+                  "p-sm rounded-lg flex items-center justify-between transition-all duration-300",
                   field.complete
-                    ? "bg-surface-container-lowest border border-tertiary-fixed-dim shadow-[var(--shadow-card)] hover:-translate-y-0.5"
+                    ? "bg-surface-container-lowest border border-tertiary-fixed-dim shadow-[var(--shadow-card)]"
                     : "bg-surface-container-low border border-dashed border-outline-variant opacity-70"
                 )}
               >
@@ -168,7 +196,7 @@ export function IntakeExperience({
                   <div>
                     <p className="font-label-caps text-label-caps text-outline">{field.label}</p>
                     <p className={cn("font-body-md", field.complete ? "text-on-surface font-semibold" : "font-body-sm text-on-surface-variant italic")}>
-                      {field.value ?? "Listening..."}
+                      {field.complete ? field.value : "Listening..."}
                     </p>
                   </div>
                 </div>
@@ -183,8 +211,14 @@ export function IntakeExperience({
         </div>
 
         <Link
-          href={mapHref}
-          className="mt-sm bg-primary hover:bg-primary-container text-primary-foreground font-body-md text-body-md font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[48px]"
+          href={canGenerate ? mapHref : "#"}
+          aria-disabled={!canGenerate}
+          className={cn(
+            "mt-sm font-body-md text-body-md font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[48px]",
+            canGenerate
+              ? "bg-primary hover:bg-primary-container text-primary-foreground"
+              : "bg-surface-variant text-on-surface-variant pointer-events-none"
+          )}
         >
           Generate Government Opportunity Map
         </Link>

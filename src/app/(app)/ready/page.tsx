@@ -1,6 +1,7 @@
-import { CheckCircle2, CircleDashed, Radar, Activity, CalendarClock } from "lucide-react";
-import { getDemoContext } from "@/lib/demo-context";
-import { computeReadiness } from "@/lib/matching/readiness";
+import Link from "next/link";
+import { CheckCircle2, CircleDashed, Radar, Activity, CalendarClock, ArrowRight } from "lucide-react";
+import { getDemoContext, demoQueryParam } from "@/lib/demo-context";
+import { computeReadiness, readinessGaps } from "@/lib/matching/readiness";
 import { DownloadPackageButton } from "@/components/DownloadPackageButton";
 import { formatDeadline } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -13,11 +14,13 @@ interface PageProps {
 
 export default async function ReadyPage({ searchParams }: PageProps) {
   const sp = await searchParams;
-  const { profile, matching } = getDemoContext(sp);
+  const { index, profile, matching } = getDemoContext(sp);
+  const qp = demoQueryParam({ index, profile });
 
   const top = matching.results[0];
   const readiness = top ? computeReadiness(profile, top.opportunity) : null;
   const complete = readiness?.overallScore === 100;
+  const gaps = readiness ? readinessGaps(readiness) : [];
 
   const nextBest = matching.results[1];
 
@@ -83,7 +86,16 @@ export default async function ReadyPage({ searchParams }: PageProps) {
                 </div>
               ))}
             </div>
-            <div className="mt-auto pt-sm flex justify-end">
+            <div className="mt-auto pt-sm flex flex-col sm:flex-row justify-end gap-sm">
+              {gaps.length > 0 && (
+                <Link
+                  href={`/support?${qp}`}
+                  className="border border-secondary text-secondary hover:bg-surface-container-low font-body-md text-body-md font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[48px]"
+                >
+                  Get Utah Support for Open Gaps
+                  <ArrowRight className="size-[18px]" />
+                </Link>
+              )}
               <DownloadPackageButton fileName={`${profile.companyName ?? "company"}-readiness-package.txt`} content={packageContent} />
             </div>
           </section>

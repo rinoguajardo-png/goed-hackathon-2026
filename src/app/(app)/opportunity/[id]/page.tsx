@@ -215,7 +215,7 @@ export default async function OpportunityDetailPage({ params, searchParams }: Pa
             </div>
 
             <Link
-              href={`/support?${qp}`}
+              href={`/ready?${qp}`}
               className="w-full bg-primary hover:bg-primary-container text-primary-foreground font-body-md text-body-md font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-auto min-h-[48px]"
             >
               Improve Readiness

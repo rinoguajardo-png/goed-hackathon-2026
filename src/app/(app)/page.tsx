@@ -135,7 +135,7 @@ export default async function OpportunityMapPage({ searchParams }: HomeProps) {
                           View Opportunity
                         </Link>
                         <Link
-                          href={`/support?${qp}`}
+                          href={`/ready?${qp}`}
                           className="border border-secondary text-secondary hover:bg-surface-container-low font-label-caps text-label-caps px-6 py-3 rounded-lg h-12 flex items-center justify-center transition-colors"
                         >
                           Improve Readiness
