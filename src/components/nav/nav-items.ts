@@ -10,8 +10,8 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { href: "/intake", label: "Intake", icon: MessageCircle },
   { href: "/", label: "Map", icon: Compass },
-  { href: "/support", label: "Support", icon: Handshake },
   { href: "/ready", label: "Ready", icon: ClipboardCheck },
+  { href: "/support", label: "Support", icon: Handshake },
 ];
 
 /** Shown separately in the header identity cluster, not as a tab. */
