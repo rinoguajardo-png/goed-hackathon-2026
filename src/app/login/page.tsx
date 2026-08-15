@@ -22,7 +22,7 @@ export default async function LoginPage({ searchParams }: PageProps) {
             <br />
             Economic Future.
           </h1>
-          <p className="font-body-lg text-body-lg text-secondary-fixed-dim mb-lg max-w-md">
+          <p className="font-body-lg text-body-lg text-secondary-fixed-dim mb-lg max-w-[28rem]">
             Connect with funding, resources, and institutional support designed to accelerate your business in Utah.
           </p>
           <div className="mt-auto space-y-4">

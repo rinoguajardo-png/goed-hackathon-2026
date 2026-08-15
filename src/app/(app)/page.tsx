@@ -49,7 +49,7 @@ export default async function OpportunityMapPage({ searchParams }: HomeProps) {
         <section className="bg-surface-container-lowest rounded-xl shadow-[var(--shadow-card)] p-lg flex flex-col items-center text-center gap-sm">
           <AlertTriangle className="text-error size-8" />
           <h2 className="font-heading text-headline-md text-primary">No strong federal opportunity right now</h2>
-          <p className="font-body-md text-body-md text-on-surface-variant max-w-xl">{matching.summary}</p>
+          <p className="font-body-md text-body-md text-on-surface-variant max-w-[36rem]">{matching.summary}</p>
         </section>
       ) : (
         <>
