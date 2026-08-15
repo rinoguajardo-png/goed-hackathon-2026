@@ -2,7 +2,6 @@ import Link from "next/link";
 import { TrendingUp, DollarSign, Landmark, CalendarClock, Sparkles, ChevronRight, CheckCircle2, AlertTriangle, MapPin } from "lucide-react";
 import { getDemoContext, demoQueryParam } from "@/lib/demo-context";
 import { computeReadiness } from "@/lib/matching/readiness";
-import { StartupSwitcher } from "@/components/StartupSwitcher";
 import { formatFundingRange, formatDeadline, formatMoney, daysUntil } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -39,10 +38,11 @@ export default async function OpportunityMapPage({ searchParams }: HomeProps) {
         </h1>
         <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl">
           Discover and evaluate targeted government contracts and grants aligned with{" "}
-          <strong className="text-on-surface">{profile.companyDescription ?? profile.companyName}</strong>. Opportunities
-          are ranked by potential and operational readiness.
+          <strong className="text-on-surface">
+            {(profile.companyDescription ?? profile.companyName ?? "your company").replace(/\.$/, "")}
+          </strong>
+          . Opportunities are ranked by potential and operational readiness.
         </p>
-        <StartupSwitcher activeIndex={index} />
       </section>
 
       {!matching.hasStrongMatch ? (
